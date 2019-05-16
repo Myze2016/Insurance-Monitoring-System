@@ -30,6 +30,8 @@ class Controller extends CI_Controller {
 		$this->load->view('setup');
 	}
 
+
+
 	public function list()
 	{
 		$this->load->view('templates/header');
@@ -99,8 +101,83 @@ class Controller extends CI_Controller {
 		}
 
 
+	}
+
+	public function query(){
+		$this->load->view('templates/header');
+		$this->load->view('query');
+	}
+
+
+	public function entry() {
+		$this->load->database();
+		$this->load->model('model');
+
+
+		$data = array(
+				'branch' => $this->model->get_branch(),
+				'part' => $this->model->get_part(),
+		);		
+
+
+		$this->load->view('templates/header');
+		$this->load->view('entry', $data);
+	}
+	public function save(){
+		$this->load->database();
+		$this->load->model('model');
+
 
 		
+
+		$this->form_validation->set_rules('pnid','Pin ID','required');
+		$this->form_validation->set_rules('branchid','Branch ID','required');
+		$this->form_validation->set_rules('account','Account','required|alpha');
+		$this->form_validation->set_rules('amount','Amount','required|decimal|greater_than_equal_to[0]');
+		$this->form_validation->set_rules('maturity','maturity','required');
+
+		$pnid =   $this->input->post('pnid');
+		$branchid  = $this->input->post('branchid');
+		$account  =  $this->input->post('account');
+		$amount  =  $this->input->post('amount');
+		$maturity  =  $this->input->post('maturity');
+
+
+		$isValidated  =  $this->form_validation->run();
+	
+		if ($isValidated) {
+			$data   =  array(
+				'branch' => $branchid,
+				'part' => $pnid,
+				'amount' => $amount,
+				'account' => $account,
+				'maturity' => $maturity
+			);
+		
+			$result   = $this->model->save($data);
+			$response   =  array(
+				'message' => 'User successfully saved!!'
+			);
+			$this->output
+        			->set_content_type('application/json')
+					->set_output(json_encode($response));
+			
+		} else {
+			$this->form_validation->set_error_delimiters(null, null);
+			$errors  =  array(
+				'part' =>form_error('pnid'),
+				'branch' => form_error('branchid'),
+				'maturity' => form_error('maturity'),
+				'account' => form_error('account'),
+				'amount' => form_error('amount')		
+			);
+			
+			$this->output->set_status_header(422);
+				$this->output
+        			->set_content_type('application/json')
+					->set_output(json_encode($errors));
+		}
 	}
+
 
 }

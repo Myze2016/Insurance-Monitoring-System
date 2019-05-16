@@ -37,6 +37,24 @@
 			return $query->result_array();
 		}
 
+		public function get_branch () {
+			$this->db->select('*');
+			$this->db->from('branch');
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		public function get_part () {
+			$this->db->select('*');
+			$this->db->from('part');
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		public function save($data){
+			$this->db->insert('insurance',$data);
+			return $this->db->affected_rows();
+		}
 		
 	}
 

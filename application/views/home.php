@@ -14,10 +14,18 @@
       <a class="nav-link" href="<?php echo base_url('setup');?>">Set Up Account</a>
     </li>
     <li class="nav-item pr-4">
-      <a class="nav-link" href="<?php echo base_url('account');?>">Account </a>
+     
+      <a class="nav-link " href="<?php echo base_url('account');?>">Account </a>
+    
     </li>
     <li class="nav-item pr-4">
-      <a class="nav-link" href="<?php echo base_url('user');?>">User</a>
+      <div class="nav-link">
+      <span class="badge badge-danger d-inline nav-link badge-pill ">!</span>
+      <a class=" d-inline pl-1 nav-link" href="<?php echo base_url('user');?>">User</a>
+      </div>
+    </li>
+        <li class="nav-item pr-4">
+      <a class="nav-link" href="<?php echo base_url('entry');?>">Data Entry</a>
     </li>
  
   </ul>
