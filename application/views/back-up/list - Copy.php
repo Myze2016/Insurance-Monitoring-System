@@ -42,16 +42,13 @@
     </thead>
   
     <tbody id="myTable">
-      <?php $rowtest=0; ?>
      <?php foreach($users as $user):;?>
       <tr>
-      <?php $rowtest=$rowtest+1; ?>
       <td><?php echo $user['account']?></td>
       <td><?php echo $user['amount']?></td>
       <td><?php echo $user['status']?></td>
       <td id="mature" ><?php echo date("y F Y", strtotime($user['maturity']));?></td>
-      <td><?php echo $user['branchnumber']?>
-      </td>
+      <td><?php echo $user['branchnumber']?></td>
       <td><?php echo $user['pn']?></td>
       </tr>
 
@@ -67,10 +64,8 @@
     <?php  
       $x = 1;
       $page = ceil($rowcount / 2);
-
     ?>
     <?php while($x != $page+1):;?>
-      
     <li class="page-item"><input type="submit" name="submit" class="page-link" value="<?php echo $x; ++$x;?>"></input></li>
     <?php endwhile;?>
   <li class="page-item"><a class="page-link">Next</a></li>

@@ -37,6 +37,56 @@
 
 		}
 
+
+
+
+		public function query() {
+			$this->db->select('*');
+			$this->db->from('insurance');
+			$this->db->join('part', 'insurance.part = part.id');
+			$this->db->join('branch', 'insurance.branch = branch.id');
+			$result    =  $this->db->get();
+
+			return $result->result_array();
+		}
+
+
+		public function filter($month, $offset, $limit) {
+			$this->db->select('*');
+			$this->db->from('insurance');
+			$this->db->join('part', 'insurance.part = part.id');
+			$this->db->join('branch', 'insurance.branch = branch.id');
+			$this->db->like('maturity', $month);
+			$this->db->limit($limit, $offset);
+			
+			
+			$result    =  $this->db->get();
+	
+			return $result->result_array();
+		}
+
+		public function filterrow($month) {
+
+			$this->db->select('*');
+			$this->db->from('insurance');
+			$this->db->join('part', 'insurance.part = part.id');
+			$this->db->join('branch', 'insurance.branch = branch.id');
+			$this->db->like('maturity', $month);
+			$result    =  $this->db->get();
+			
+			return $result->num_rows();
+		}
+
+
+
+
+
+
+
+
+
+
+
 		 public function view_all_users($limit,$offset){
 			$this->db->select('*');
 			$this->db->from('insurance');

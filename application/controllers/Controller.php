@@ -24,6 +24,77 @@ class Controller extends CI_Controller {
 		$this->load->view('home');
 	}
 
+
+	public function newlist() 
+	{
+		$this->load->database();
+		$this->load->model('model');
+		$data  = array('users' => $this->model->query(),
+			'rowcount' => $this->model->rowcount(),
+			'month' => NULL
+		);
+		$this->load->view('templates/header');
+		$this->load->view('newlist', $data);
+	}
+
+	public function filter() 
+	{
+		$this->load->database();
+		$this->load->model('model');
+		$monthnumber = $this->input->get('month');
+		$page = $this->input->get('submit-input');
+	
+		$month = date('Y-m', strtotime($monthnumber));
+		$rowsperpage = 2;
+		$y=0;
+		$x=1;
+
+		while($x<$page) {
+			$y = $y + $rowsperpage;
+			++$x;
+		};
+		if ($y==-1) {
+			$y=0;
+		};
+	
+		$offset = $y;
+		$limit = $rowsperpage;
+		echo $monthnumber;
+		$data  = array(
+			'users' => $this->model->filter($month,$offset,$limit),
+			'rowcount' => $this->model->filterrow($month),
+			'month' => $monthnumber
+		);
+	
+		$this->load->view('templates/header');
+		$this->load->view('newlist', $data);
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public function setup()
 	{
 		$this->load->view('templates/header');
@@ -101,21 +172,23 @@ class Controller extends CI_Controller {
 
 		$this->load->database();
 		$this->load->model('model');
-		$pages=$this->input->get('submit');
+		$test = $this->input->get('maturity');
+		$name = $this->input->get('name');
+		$pages=$this->input->get('submit-input');
 		$error = isset($pages);
+		$testerror = isset($test);
 		if (!$error){
 			$pages=1;
 		};
+
 		$offset=0;
 		$y=1;
-		echo var_dump($pages);
 		while ($y!=$pages) {
 			$offset=$offset+2;
 			$y = $y+1;
 		};
 		$y=0;
 		$limit=$offset+2;
-		
 		
 		$data  = array('users' => $this->model->view_all_users($limit, $offset),
 						'rowcount' => $this->model->rowcount());
