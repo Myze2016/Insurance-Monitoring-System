@@ -26,6 +26,11 @@ class Controller extends CI_Controller {
 		$this->load->view('templates/header');
 		$this->load->view('setup');
 	}
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 	public function account()
 	{
 		$this->load->view('templates/header');
@@ -74,8 +79,15 @@ class Controller extends CI_Controller {
 			header('location:'.base_url(). 'user'); 
 		}
 	}
+<<<<<<< HEAD
 	public function list()
 	{
+=======
+
+	public function list()
+	{
+
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		$this->load->database();
 		$this->load->model('model');
 		$pages=$this->input->get('submit');
@@ -96,9 +108,17 @@ class Controller extends CI_Controller {
 		
 		$data  = array('users' => $this->model->view_all_users($limit, $offset),
 						'rowcount' => $this->model->rowcount());
+<<<<<<< HEAD
 		$this->load->view('templates/header');
 		$this->load->view('tables', $data);
 	}
+=======
+
+		$this->load->view('templates/header');
+		$this->load->view('list', $data);
+	}
+
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 	
 	public function entry() {
 		$this->load->database();
@@ -126,6 +146,28 @@ class Controller extends CI_Controller {
         			->set_content_type('application/json')
 					->set_output(json_encode($lastnames));
 	}
+
+
+	public function autocomplete() {
+		$this->load->database();
+		$this->load->model('model');
+		$search = $this->input->get('term');
+		$users = $this->model->search($search);
+		$lastnames =  array();
+		foreach ($users as $lastname) {
+			array_push($lastnames, $lastname['lastname']);
+		}
+		
+		
+	
+
+		$this->output
+        			->set_content_type('application/json')
+					->set_output(json_encode($lastnames));
+	}
+
+
+
 	public function save(){
 		$this->load->database();
 		$this->load->model('model');

@@ -12,6 +12,10 @@
 			$query = $this->db->get();
 			return $query->result_array();
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		public function check_valid($account,$pin){
 			$this->db->select('pin');
 			$this->db->from('users');
@@ -31,6 +35,10 @@
 			$query = $this->db->get();
 			return $query->result();
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		 public function view_all_users($limit,$offset){
 			$this->db->select('*');
 			$this->db->from('insurance');
@@ -38,8 +46,15 @@
 			$this->db->join('branch', 'insurance.branch = branch.id');
 			$this->db->limit($limit,$offset);
 			$result    =  $this->db->get();
+<<<<<<< HEAD
 			return $result->result_array();
 		 }
+=======
+
+			return $result->result_array();
+		 }
+
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		 public function rowcount() {
 		 	$this->db->select('*');
 			$this->db->from('insurance');
@@ -47,6 +62,10 @@
 			
 			return $result->num_rows();
 		 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		public function useraccount($id) {
 			$this->db->select('*');
 			$this->db->from('users');
