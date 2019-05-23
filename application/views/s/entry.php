@@ -4,7 +4,7 @@
   <div style="display: none;" class="alert alert-success col-4 form-group" id="success">
     <strong>Success!</strong> <label id="succes-message"> Success User Added </label>
   </div>
-
+  
  
 	<form method="POST" class="mt-2" action="<?php echo base_url('save')?>" id="form">
 
@@ -33,46 +33,16 @@
         
 
         
-        <div class="form-group mt-1 col-lg-4 col-sm-12 ui-widget ">
+        <div class="form-group mt-1 col-lg-4 col-sm-12 ">
         	<input type="text" class="form-control"  id="account" placeholder="Account Name" name="account" >
            <label id="account-error" class="small invalid-tooltip"> </label>  
         </div>
-
-        <script type="text/javascript">
-
-          var base_url = window.location.origin;
-          console.log( base_url + "/project/controller/autocomplete");
-         $( function() {
-          $( "#account" ).autocomplete({
-            source: base_url + "/project/controller/autocomplete",
-            });
-          } );
-        </script>
-
-
           <div class="form-group mt-1 col-lg-4 col-sm-12">
             <input type="text" class="form-control" id="amount" placeholder="Loan Amount" name="amount">
             <label id="amount-error" class="small invalid-tooltip">  </label>
-          </div>
-          <div class="form-group mt-1 col-lg-4 col-sm-12">
-            <p> 
-        <label><input type="radio" name="radio" value="option1">12 Months</label> 
-        <label><input type="radio" name="radio" value="option2">36 Months</label>
-        <label><input type="radio" name="radio" value="option3">48 Months</label>
-    </p>
-          </div>
-           <div class="form-group mt-1 col-lg-4 col-sm-12">
-              <input type="text" class="form-control" id="datepicker" name="maturity">
-              <label  id="maturity-error" class="small invalid-tooltip"> </label>
         </div>
-          <script>
-      $( function() {
-        $( "#datepicker" ).datepicker();
-      } );
-     </script>
 
- 
-     <!--- <div class="form-group mt-1 col-lg-4 col-sm-12">
+      <div class="form-group mt-1 col-lg-4 col-sm-12">
           <input id="datepicker" name="maturity" readonly>
           <script>
             var dateToday = new Date();
@@ -82,26 +52,29 @@
             uiLibrary: 'bootstrap4'
              }); 
 
-           </script> 
+           </script>
            <label  id="maturity-error" class="small invalid-tooltip"> </label>
-       </div>  -->
+       </div> 
 
         <div class="form-group col-lg-4 col-sm-12">
         <input class="btn btn-primary" type="submit" value="submit"> </input>
         <a href="<?php echo base_url(); ?>" class="btn btn-danger text-decoration-none text-white">Return </a>
     	</div>
+
+
+    <p> 
+        <label><input type="radio" name="radio" value="option1">12 Months</label> 
+        <label><input type="radio" name="radio" value="option2">36 Months</label>
+        <label><input type="radio" name="radio" value="option3">48 Months</label>
+    </p>
+    
+
     </form>
-
-
-   
- 
-
 </div>
 
 
 
 <script> 
-
   $('input[name="radio"]').on('change', function(){
      var radioValue = $("input[name='radio']:checked").val();
      var d = new Date();
@@ -141,8 +114,6 @@
     $("#branch").removeClass("is-invalid");
     $("#part").removeClass("is-invalid");
   });
-
- 
 
    $(document).ready(function(){
      $('#form').submit(function(e){
@@ -184,9 +155,9 @@
             document.getElementById("branch-error").style.display = "block";
           }
         }
-      })
-      
     })
-
+      
   })
+
+})
 </script>

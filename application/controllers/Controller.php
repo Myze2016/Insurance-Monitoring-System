@@ -31,13 +31,6 @@ class Controller extends CI_Controller {
 	}
 
 
-
-	public function list()
-	{
-		$this->load->view('templates/header');
-		$this->load->view('list');
-	}
-
 	public function account()
 	{
 		$this->load->view('templates/header');
@@ -103,12 +96,35 @@ class Controller extends CI_Controller {
 
 	}
 
-	public function query(){
+	public function list()
+	{
+
+		$this->load->database();
+		$this->load->model('model');
+		$pages=$this->input->get('submit');
+		$error = isset($pages);
+		if (!$error){
+			$pages=1;
+		};
+		$offset=0;
+		$y=1;
+		echo var_dump($pages);
+		while ($y!=$pages) {
+			$offset=$offset+2;
+			$y = $y+1;
+		};
+		$y=0;
+		$limit=$offset+2;
+		
+		
+		$data  = array('users' => $this->model->view_all_users($limit, $offset),
+						'rowcount' => $this->model->rowcount());
+
 		$this->load->view('templates/header');
-		$this->load->view('query');
+		$this->load->view('list', $data);
 	}
 
-
+	
 	public function entry() {
 		$this->load->database();
 		$this->load->model('model');
@@ -123,6 +139,28 @@ class Controller extends CI_Controller {
 		$this->load->view('templates/header');
 		$this->load->view('entry', $data);
 	}
+
+
+	public function autocomplete() {
+		$this->load->database();
+		$this->load->model('model');
+		$search = $this->input->get('term');
+		$users = $this->model->search($search);
+		$lastnames =  array();
+		foreach ($users as $lastname) {
+			array_push($lastnames, $lastname['lastname']);
+		}
+		
+		
+	
+
+		$this->output
+        			->set_content_type('application/json')
+					->set_output(json_encode($lastnames));
+	}
+
+
+
 	public function save(){
 		$this->load->database();
 		$this->load->model('model');
@@ -151,7 +189,8 @@ class Controller extends CI_Controller {
 				'part' => $pnid,
 				'amount' => $amount,
 				'account' => $account,
-				'maturity' => $maturity
+				'maturity' => $maturity,
+				'status' => "not paid"
 			);
 		
 			$result   = $this->model->save($data);

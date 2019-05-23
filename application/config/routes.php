@@ -56,6 +56,7 @@ $route['confirm'] = 'controller/confirm';
 $route['account'] = 'controller/account';
 $route['add'] = 'controller/add';
 $route['login'] = 'controller/login';
+$route['list'] = 'controller/list';
 $route['user'] = 'controller/user';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
