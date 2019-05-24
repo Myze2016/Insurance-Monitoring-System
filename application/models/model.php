@@ -1,7 +1,5 @@
 <?php
-
 	class model extends CI_Model {
-
 		public function save_account($data){
 			$this->db->insert('users',$data);
 			return $this->db->affected_rows();
@@ -14,7 +12,10 @@
 			$query = $this->db->get();
 			return $query->result_array();
 		}
+<<<<<<< HEAD
+=======
 
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		public function check_valid($account,$pin){
 			$this->db->select('pin');
 			$this->db->from('users');
@@ -27,16 +28,17 @@
 				return false;
 			}
 		}
-
 		public function information($account) {
 			$this->db->select('*');
 			$this->db->from('users');
 			$this->db->where('account', $account);
 			$query = $this->db->get();
 			return $query->result();
-
 		}
+<<<<<<< HEAD
+=======
 
+<<<<<<< HEAD
 
 
 
@@ -87,6 +89,9 @@
 
 
 
+=======
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
+>>>>>>> 084d25c9888b3f15be14f44055d22951f71fc155
 		 public function view_all_users($limit,$offset){
 			$this->db->select('*');
 			$this->db->from('insurance');
@@ -94,10 +99,15 @@
 			$this->db->join('branch', 'insurance.branch = branch.id');
 			$this->db->limit($limit,$offset);
 			$result    =  $this->db->get();
+<<<<<<< HEAD
+			return $result->result_array();
+		 }
+=======
 
 			return $result->result_array();
 		 }
 
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		 public function rowcount() {
 		 	$this->db->select('*');
 			$this->db->from('insurance');
@@ -105,7 +115,10 @@
 			
 			return $result->num_rows();
 		 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		public function useraccount($id) {
 			$this->db->select('*');
 			$this->db->from('users');
@@ -113,26 +126,22 @@
 			$query = $this->db->get();
 			return $query->result_array();
 		}
-
 		public function get_branch () {
 			$this->db->select('*');
 			$this->db->from('branch');
 			$query = $this->db->get();
 			return $query->result_array();
 		}
-
 		public function get_part () {
 			$this->db->select('*');
 			$this->db->from('part');
 			$query = $this->db->get();
 			return $query->result_array();
 		}
-
 		public function save($data){
 			$this->db->insert('insurance',$data);
 			return $this->db->affected_rows();
 		}
 		
 	}
-
 ?>
