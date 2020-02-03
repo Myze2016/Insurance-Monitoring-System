@@ -62,3 +62,6 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['entry'] = 'controller/entry';
 $route['query'] = 'controller/query';
+$route['filter'] = 'controller/filter';
+$route['forrenewal'] = 'controller/forrenewal';
+$route['updated'] = 'controller/updated';

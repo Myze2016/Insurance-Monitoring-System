@@ -1,124 +1,55 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Controller extends CI_Controller {
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+
 	public function index()
 	{
 		$this->load->view('templates/header');
 		$this->load->view('home');
 	}
-<<<<<<< HEAD
-
-
-	public function newlist() 
-	{
-		$this->load->database();
-		$this->load->model('model');
-		$data  = array('users' => $this->model->query(),
-			'rowcount' => $this->model->rowcount(),
-			'month' => NULL
-		);
-		$this->load->view('templates/header');
-		$this->load->view('newlist', $data);
-	}
-
-	public function filter() 
-	{
-		$this->load->database();
-		$this->load->model('model');
-		$monthnumber = $this->input->get('month');
-		$page = $this->input->get('submit-input');
-	
-		$month = date('Y-m', strtotime($monthnumber));
-		$rowsperpage = 2;
-		$y=0;
-		$x=1;
-
-		while($x<$page) {
-			$y = $y + $rowsperpage;
-			++$x;
-		};
-		if ($y==-1) {
-			$y=0;
-		};
-	
-		$offset = $y;
-		$limit = $rowsperpage;
-		echo $monthnumber;
-		$data  = array(
-			'users' => $this->model->filter($month,$offset,$limit),
-			'rowcount' => $this->model->filterrow($month),
-			'month' => $monthnumber
-		);
-	
-		$this->load->view('templates/header');
-		$this->load->view('newlist', $data);
-
-	}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> 084d25c9888b3f15be14f44055d22951f71fc155
 	public function setup()
 	{
 		$this->load->view('templates/header');
 		$this->load->view('setup');
 	}
-<<<<<<< HEAD
-=======
 
+	public function updatedate() 
+	{
 
->>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
-	public function account()
-	{
-		$this->load->view('templates/header');
-		$this->load->view('account');
-	}
-	public function user()
-	{
 		$this->load->database();
 		$this->load->model('model');
-		$data = array('user' => $this->model->useraccount($_SESSION['id']));
-		$this->load->view('templates/header');
-		$this->load->view('user',$data);
+		$date = $this->input->get('changepicker');
+		$id = $this->input->get('hiddenvalue');
+		$this->model->updatedate($id, $date);
+		$this->model->deletebyinsuranceid($id);
+		header('location:'.base_url(). 'controller/filter'); 
 	}
+
+
+	
+
+	public function redirect() {
+		$this->load->database();
+		$this->load->model('model');
+		$id = $this->input->get('notification-id');
+		$month= $this->input->get('month');
+
+	
+		$data  = array(
+			'users' => $this->model->redirect($id),
+			'rowcount' => 1,
+			'notification' => $this->model->getnotifications($month),
+			'month' => $month,
+			'currentpage' => 1
+		);
+				$this->load->view('templates/header');
+		$this->load->view('newlist', $data);
+	
+	}
+
 	public function add(){
 		$this->load->database();
 		$this->load->model('model');
@@ -131,12 +62,19 @@ class Controller extends CI_Controller {
 			'middlename' => $middlename,
 			'lastname' => $lastname,
 			'pin' => password_hash($pin,PASSWORD_DEFAULT),
-		);
-			
+		);	
 		$result   = $this->model->save_account($data);
 		header('Location:  '  . base_url(''));
 	}
+
+	public function account()
+	{
+		$this->load->view('templates/header');
+		$this->load->view('account');
+	}
+
 	public function login(){
+		$this->load->view('login');
 		$this->load->database();
 		$this->load->model('model');
 		$account  = $this->input->post('account');
@@ -154,15 +92,139 @@ class Controller extends CI_Controller {
 			header('location:'.base_url(). 'user'); 
 		}
 	}
-<<<<<<< HEAD
-	public function list()
+
+
+	public function entry() {
+		$this->load->database();
+		$this->load->model('model');
+		$data = array(
+				'branch' => $this->model->get_branch(),
+		);		
+		$this->load->view('templates/header');
+		$this->load->view('entry', $data);
+	}
+	public function autocomplete() {
+		$this->load->database();
+		$this->load->model('model');
+		$search = $this->input->get('term');
+		$users = $this->model->search($search);
+		$lastnames =  array();
+		foreach ($users as $lastname) {
+			array_push($lastnames, $lastname['lastname']);
+		}
+		$this->output
+        			->set_content_type('application/json')
+					->set_output(json_encode($lastnames));
+	}
+
+
+
+	public function newlist() 
 	{
-=======
+		$this->load->database();
+		$this->load->model('model');
+		$data  = array('users' => $this->model->query(),
+			'rowcount' => $this->model->rowcount(),
+			'month' => NULL
+		);
+		$this->load->view('templates/header');
+		$this->load->view('newlist', $data);
+	}
+
+	public function deletenotification(){
+		$this->load->database();
+		$this->load->model('model');
+		$delete= $this->input->get('delete');
+		$this->model->deletenotification($delete);
+		header('Location:  '  . base_url('filter'));
+	}
+
+	public function filter() 
+	{
+		$this->load->database();
+		$this->load->model('model');
+		$month= $this->input->get('month');
+		$this->run();
+
+
+		$page = $this->input->get('submit-input');
+		$type = $this->input->get('account-type');
+		if (is_null($page)) {
+			$currentpage = 1;
+		} else {
+			$currentpage = $page;
+		}
+		
+		if (is_null($type)) {
+			$type="For Renewal";
+		} 
+		
+		
+		
+
+		$rowsperpage = 5;
+		$y=0;
+		$x=1;
+
+		while($x<$page) {
+			$y = $y + $rowsperpage;
+			++$x;
+		};
+		if ($y==-1) {
+			$y=0;
+		};
+		$offset = $y;
+		$limit = $rowsperpage;
+
+
+		$data  = array(
+			'users' => $this->model->filter($month,$offset,$limit,$type),
+			'rowcount' => $this->model->filterrow($month,$type),
+			'notification' => $this->model->getnotifications($month),
+			'month' => $month,
+			'currentpage' => $currentpage,
+			'accounttype' => $type
+		);
+	
+		$this->load->view('templates/header');
+		$this->load->view('newlist', $data);
+
+	}
+
+	public function run(){
+		$this->load->database();
+		$this->load->model('model');
+		$data = $this->model->maturity();
+		foreach ($data as $row) {
+			$maturity =  $row['maturity'];
+			$date = date('Y-m-d', strtotime($maturity.'-7 days'));
+			$currentdate = date("Y-m-d");
+			$account = $row['id'];
+
+			
+		
+
+			if ($date==$currentdate) {
+				$isValidated = $this->model->checknotificationid($account);
+				/*echo var_dump($isValidated);*/
+				if ($isValidated) {
+				$data   =  array(
+				'insuranceid' => $row['id'],
+				'maturity' => $row['maturity'],
+				'maturitynotification' => $date,
+				);
+				$result   = $this->model->notification($data);
+				
+				}
+				
+			}
+		}
+	}
+
 
 	public function list()
 	{
 
->>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
 		$this->load->database();
 		$this->load->model('model');
 		$test = $this->input->get('maturity');
@@ -185,70 +247,14 @@ class Controller extends CI_Controller {
 		
 		$data  = array('users' => $this->model->view_all_users($limit, $offset),
 						'rowcount' => $this->model->rowcount());
-<<<<<<< HEAD
 		$this->load->view('templates/header');
 		$this->load->view('tables', $data);
 	}
-=======
-
-		$this->load->view('templates/header');
-		$this->load->view('list', $data);
-	}
-
->>>>>>> 058b14a142c799d6ff2efe51138ba477dd0a87b1
-	
-	public function entry() {
-		$this->load->database();
-		$this->load->model('model');
-		$data = array(
-				'branch' => $this->model->get_branch(),
-				'part' => $this->model->get_part(),
-		);		
-		$this->load->view('templates/header');
-		$this->load->view('blank', $data);
-	}
-	public function autocomplete() {
-		$this->load->database();
-		$this->load->model('model');
-		$search = $this->input->get('term');
-		$users = $this->model->search($search);
-		$lastnames =  array();
-		foreach ($users as $lastname) {
-			array_push($lastnames, $lastname['lastname']);
-		}
-		
-		
-	
-		$this->output
-        			->set_content_type('application/json')
-					->set_output(json_encode($lastnames));
-	}
-
-
-	public function autocomplete() {
-		$this->load->database();
-		$this->load->model('model');
-		$search = $this->input->get('term');
-		$users = $this->model->search($search);
-		$lastnames =  array();
-		foreach ($users as $lastname) {
-			array_push($lastnames, $lastname['lastname']);
-		}
-		
-		
-	
-
-		$this->output
-        			->set_content_type('application/json')
-					->set_output(json_encode($lastnames));
-	}
-
 
 
 	public function save(){
 		$this->load->database();
-		$this->load->model('model');
-		
+		$this->load->model('model');	
 		$this->form_validation->set_rules('pnid','Pin ID','required');
 		$this->form_validation->set_rules('branchid','Branch ID','required');
 		$this->form_validation->set_rules('account','Account','required|alpha');
@@ -260,7 +266,6 @@ class Controller extends CI_Controller {
 		$amount  =  $this->input->post('amount');
 		$maturity  =  $this->input->post('maturity');
 		$isValidated  =  $this->form_validation->run();
-	
 		if ($isValidated) {
 			$data   =  array(
 				'branch' => $branchid,
@@ -268,7 +273,7 @@ class Controller extends CI_Controller {
 				'amount' => $amount,
 				'account' => $account,
 				'maturity' => $maturity,
-				'status' => "not paid"
+				'status' => "For Renewal"
 			);
 		
 			$result   = $this->model->save($data);
@@ -288,7 +293,6 @@ class Controller extends CI_Controller {
 				'account' => form_error('account'),
 				'amount' => form_error('amount')		
 			);
-			
 			$this->output->set_status_header(422);
 				$this->output
         			->set_content_type('application/json')
